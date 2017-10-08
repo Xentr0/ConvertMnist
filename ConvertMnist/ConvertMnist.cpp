@@ -1,7 +1,4 @@
-// ConvertMnist.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
+#include <stdio.h>
 #include <iostream>
 #include <vector>
 #include <cassert>
@@ -13,7 +10,7 @@ int main()
 {
 	unsigned char byte;
 	vector<unsigned> labels;
-	FILE *labelfile = fopen("C:/Users/Ruben/Desktop/NeuralNet/t10k-labels.idx1-ubyte", "rb");
+	FILE *labelfile = fopen("Data/t10k-labels-idx1-ubyte.gz", "rb");
 	fseek(labelfile, 8, SEEK_SET);
 	while (fread(&byte, 1, 1, labelfile) != 0)
 	{
@@ -24,13 +21,15 @@ int main()
 	fclose(labelfile);
 
 	vector<float> pixeldata;
-	FILE *fp = fopen("C:/Users/Ruben/Desktop/NeuralNet/t10k-images.idx3-ubyte", "rb");
+	FILE *fp = fopen("Data/t10k-images-idx3-ubyte.gz", "rb");
 	fseek(fp, 16, SEEK_SET);
 	while (fread(&byte, 1, 1, fp) != 0)
 	{	 
 		pixeldata.push_back(byte);
-		//cout << "Reading bytes, step: " << pixeldata.size() << endl;
 	}
+	
+	cout << pixeldata.size() << " pixels read." << endl;
+	cout << 10000 * 28 * 28 << " pixels expected." << endl;
 
 	fclose(fp);
 
@@ -38,7 +37,7 @@ int main()
 
 	assert(pixeldata.size() / imagesize == labels.size());
 
-	ofstream outfile("C:/Users/Ruben/Desktop/NeuralNet/testMNIST.txt");
+	ofstream outfile("Data/trainMNIST.txt");
 	//outfile << "topology: " << imagesize << " 100 10" << endl;
 	
 	
